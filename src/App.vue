@@ -8,14 +8,14 @@
       autofocus
       @keyup.enter="addTodo"
     />
-    <transition-group v-if="todos" ref="list" name="list" tag="ul" class="mt-8">
-      <TodoItem v-for="todo in todos" :key="todo.id" :todo="todo" @check="todo.done = $event" />
+    <transition-group v-if="getSortedTodos" ref="list" name="list" tag="ul" class="mt-8">
+      <TodoItem v-for="todo in getSortedTodos" :key="todo.id" :todo="todo" @check="todo.done = $event" />
     </transition-group>
   </div>
 </template>
 
 <script>
-import { uniqueId } from 'lodash';
+import { uniqueId, partition } from 'lodash';
 
 import TodoItem from '@/components/TodoItem';
 
@@ -29,6 +29,12 @@ export default {
       { text: 'Eggs', done: true, id: uniqueId() },
     ],
   }),
+  computed: {
+    getSortedTodos() {
+      const [a, b] = partition(this.todos, 'done');
+      return b.concat(a);
+    },
+  },
   methods: {
     addTodo(e) {
       this.todos.unshift({
