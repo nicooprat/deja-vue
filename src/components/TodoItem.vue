@@ -1,15 +1,16 @@
 <template>
-  <li class="flex items-center relative">
-    <label
-      class="absolute left-0 transform -translate-x-full p-4 text-gray-500 opacity-50 hover:opacity-100 focus:opacity-100 active:opacity-100 cursor-pointer"
-    >
+  <li
+    class="flex items-center relative bg-white rounded-lg"
+    :class="{ 'shadow-md': !todo.done, 'text-gray-500': todo.done }"
+  >
+    <label class="p-4 text-gray-500 opacity-50 hover:opacity-100 focus:opacity-100 active:opacity-100 cursor-pointer">
       <input
         type="checkbox"
         :checked="todo.done"
         class="absolute opacity-0 pointer-events-none"
         @change="$emit('check', !todo.done)"
       />
-      <svg width="24" height="24" viewBox="0 0 24 24">
+      <svg width="18" height="18" viewBox="0 0 24 24">
         <path
           v-if="todo.done"
           fill="currentColor"
@@ -26,27 +27,19 @@
       type="text"
       :value="todo.text"
       :readonly="todo.done"
-      class="w-full flex items-center bg-white py-4 px-8 rounded-lg bg-transparent"
-      :class="{ 'shadow-md': !todo.done, 'text-gray-500': todo.done }"
+      class="w-full flex items-center py-4 bg-transparent focus:outline-none"
+      :class="{ 'text-gray-500': todo.done }"
       @change="$emit('update', $event.target.value)"
     />
     <button
-      class="absolute right-0 transform scale-50 p-4 text-gray-500 opacity-50 hover:opacity-100 focus:opacity-100 active:opacity-100"
+      class="px-6 text-gray-500 opacity-50 hover:opacity-100 focus:opacity-100 active:opacity-100"
       @click="$emit('remove')"
     >
-      <svg width="24" height="24" viewBox="0 0 24 24">
+      <svg width="12" height="12" viewBox="0 0 24 24">
         <path
           fill="currentColor"
           d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"
         />
-      </svg>
-    </button>
-    <button
-      v-if="!todo.done"
-      class="absolute right-0 transform scale-75 translate-x-full p-4 text-gray-500 opacity-50 hover:opacity-100 focus:opacity-100 active:opacity-100"
-    >
-      <svg width="24" height="24" viewBox="0 0 24 24">
-        <path fill="currentColor" d="M24 6h-24v-4h24v4zm0 4h-24v4h24v-4zm0 8h-24v4h24v-4z" />
       </svg>
     </button>
   </li>

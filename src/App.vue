@@ -1,10 +1,10 @@
 <template>
-  <div id="app" class="text-center max-w-xl mx-auto px-16">
+  <div id="app" class="text-center max-w-lg mx-auto px-4">
     <img alt="Vue logo" src="./assets/logo.png" class="mx-auto mb-10 mt-32" />
     <input
       type="text"
       placeholder="Don't forget the..."
-      class="w-full bg-transparent rounded-lg border-2 border-gray-300 py-4 px-8 focus:outline-none focus:border-blue-400"
+      class="w-full bg-transparent rounded-lg border-2 border-gray-300 py-4 px-6 focus:outline-none focus:border-blue-400"
       autofocus
       @keyup.enter="addTodo"
     />
