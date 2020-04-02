@@ -9,7 +9,13 @@
       @keyup.enter="addTodo"
     />
     <transition-group v-if="getSortedTodos" ref="list" name="list" tag="ul" class="mt-8">
-      <TodoItem v-for="todo in getSortedTodos" :key="todo.id" :todo="todo" @check="todo.done = $event" />
+      <TodoItem
+        v-for="todo in getSortedTodos"
+        :key="todo.id"
+        :todo="todo"
+        @check="todo.done = $event"
+        @remove="removeTodo(todo)"
+      />
     </transition-group>
   </div>
 </template>
@@ -44,13 +50,16 @@ export default {
       });
       e.target.value = '';
     },
+    removeTodo(todo) {
+      const index = this.todos.findIndex((t) => t.id === todo.id);
+      this.todos.splice(index, 1);
+    },
   },
 };
 </script>
 
 <style scoped>
-.list-enter-active,
-.list-leave-active {
+.list-move {
   transition: all 300ms;
 }
 </style>
