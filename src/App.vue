@@ -23,6 +23,7 @@
         :class="{ 'mt-4': index > 0 }"
         :todo="todo"
         @check="todo.done = $event"
+        @update="todo.text = $event"
         @remove="removeTodo(todo)"
       />
     </transition-group>

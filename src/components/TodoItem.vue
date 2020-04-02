@@ -28,6 +28,7 @@
       :readonly="todo.done"
       class="w-full flex items-center bg-white py-4 px-8 rounded-lg bg-transparent"
       :class="{ 'shadow-md': !todo.done, 'text-gray-500': todo.done }"
+      @change="$emit('update', $event.target.value)"
     />
     <button
       class="absolute right-0 transform scale-50 p-4 text-gray-500 opacity-50 hover:opacity-100 focus:opacity-100 active:opacity-100"
