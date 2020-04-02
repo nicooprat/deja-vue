@@ -1,6 +1,8 @@
 <template>
-  <li class="flex items-center relative mt-4">
-    <label class="absolute left-0 transform -translate-x-full p-4 cursor-pointer text-gray-300 hover:text-gray-500">
+  <li class="flex items-center relative">
+    <label
+      class="absolute left-0 transform -translate-x-full p-4 text-gray-500 opacity-50 hover:opacity-100 focus:opacity-100 active:opacity-100 cursor-pointer"
+    >
       <input
         type="checkbox"
         :checked="todo.done"
@@ -28,7 +30,7 @@
       :class="{ 'shadow-md': !todo.done, 'text-gray-500': todo.done }"
     />
     <button
-      class="absolute right-0 transform scale-50 p-4 text-gray-300 hover:text-gray-500 focus:text-gray-500 active:text-gray-500"
+      class="absolute right-0 transform scale-50 p-4 text-gray-500 opacity-50 hover:opacity-100 focus:opacity-100 active:opacity-100"
       @click="$emit('remove')"
     >
       <svg width="24" height="24" viewBox="0 0 24 24">
@@ -40,7 +42,7 @@
     </button>
     <button
       v-if="!todo.done"
-      class="absolute right-0 transform scale-75 translate-x-full p-4 text-gray-300 hover:text-gray-500 focus:text-gray-500 active:text-gray-500"
+      class="absolute right-0 transform scale-75 translate-x-full p-4 text-gray-500 opacity-50 hover:opacity-100 focus:opacity-100 active:opacity-100"
     >
       <svg width="24" height="24" viewBox="0 0 24 24">
         <path fill="currentColor" d="M24 6h-24v-4h24v4zm0 4h-24v4h24v-4zm0 8h-24v4h24v-4z" />

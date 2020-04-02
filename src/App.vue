@@ -8,10 +8,12 @@
       autofocus
       @keyup.enter="addTodo"
     />
-    <transition-group v-if="getSortedTodos" ref="list" name="list" tag="ul" class="mt-8">
+    <transition-group v-if="getSortedTodos" name="list" tag="ul" class="mt-8 relative" appear>
       <TodoItem
-        v-for="todo in getSortedTodos"
+        v-for="(todo, index) in getSortedTodos"
         :key="todo.id"
+        class="todo"
+        :class="{ 'mt-4': index > 0 }"
         :todo="todo"
         @check="todo.done = $event"
         @remove="removeTodo(todo)"
@@ -59,7 +61,21 @@ export default {
 </script>
 
 <style scoped>
-.list-move {
+.todo {
   transition: all 300ms;
+  position: relative;
+  z-index: 1;
+}
+
+.list-enter,
+.list-leave-to {
+  opacity: 0;
+  transform: translateY(-100%);
+  z-index: 0;
+}
+
+.list-leave-active {
+  position: absolute;
+  width: 100%;
 }
 </style>
