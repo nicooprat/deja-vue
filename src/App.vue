@@ -8,11 +8,18 @@
       autofocus
       @keyup.enter="addTodo"
     />
-    <transition-group v-if="getSortedTodos" name="list" tag="ul" class="mt-8 relative" appear>
+    <transition-group
+      v-if="getSortedTodos"
+      name="list"
+      tag="ul"
+      class="mt-8 relative"
+      :style="`--t: ${getSortedTodos.length}`"
+    >
       <TodoItem
         v-for="(todo, index) in getSortedTodos"
         :key="todo.id"
         class="todo"
+        :style="`--i: ${index}`"
         :class="{ 'mt-4': index > 0 }"
         :todo="todo"
         @check="todo.done = $event"
@@ -23,6 +30,7 @@
 </template>
 
 <script>
+/* eslint-disable no-unused-vars */
 import { uniqueId, partition } from 'lodash';
 
 import TodoItem from '@/components/TodoItem';
@@ -67,15 +75,29 @@ export default {
   z-index: 1;
 }
 
+/* Staggering technique from https://codepen.io/shshaw/pen/YLmdxz?editors=0100 */
+.list-move {
+  transition-delay: calc(50ms * var(--i));
+}
+
 .list-enter,
 .list-leave-to {
   opacity: 0;
-  transform: translateY(-100%);
+  transform: translateY(-50%);
   z-index: 0;
+}
+
+.list-enter-active {
+  transition-delay: calc(50ms * (var(--total) - var(--i)));
+}
+
+.list-leave-active {
+  transition-delay: calc(50ms * var(--i));
 }
 
 .list-leave-active {
   position: absolute;
   width: 100%;
+  transition-delay: calc(50ms * var(--i));
 }
 </style>
