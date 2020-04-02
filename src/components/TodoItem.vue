@@ -22,10 +22,13 @@
       type="text"
       :value="todo.text"
       :readonly="todo.done"
-      class="w-full flex items-center bg-white py-4 px-8 rounded bg-transparent"
+      class="w-full flex items-center bg-white py-4 px-8 rounded-lg bg-transparent"
       :class="{ 'shadow-md': !todo.done, 'text-gray-500': todo.done }"
     />
-    <button v-if="!todo.done" class="absolute right-0 transform translate-x-full p-4 text-gray-300 hover:text-gray-500">
+    <button
+      v-if="!todo.done"
+      class="absolute right-0 transform translate-x-full p-4 text-gray-300 hover:text-gray-500 focus:text-gray-500 active:text-gray-500"
+    >
       <svg width="24" height="24" viewBox="0 0 24 24">
         <path fill="currentColor" d="M24 6h-24v-4h24v4zm0 4h-24v4h24v-4zm0 8h-24v4h24v-4z" />
       </svg>

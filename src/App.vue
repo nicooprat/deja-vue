@@ -4,11 +4,13 @@
     <input
       type="text"
       placeholder="Don't forget the..."
-      class="w-full bg-transparent rounded border border-gray-400 py-4 px-8"
+      class="w-full bg-transparent rounded-lg border-2 border-gray-300 py-4 px-8 focus:outline-none focus:border-blue-400"
+      autofocus
+      @keyup.enter="addTodo"
     />
-    <ul v-if="todos" class="mt-8">
+    <transition-group v-if="todos" ref="list" name="list" tag="ul" class="mt-8">
       <TodoItem v-for="todo in todos" :key="todo.id" :todo="todo" />
-    </ul>
+    </transition-group>
   </div>
 </template>
 
@@ -27,5 +29,22 @@ export default {
       { text: 'Eggs', done: true, id: uniqueId() },
     ],
   }),
+  methods: {
+    addTodo(e) {
+      this.todos.unshift({
+        text: e.target.value,
+        done: false,
+        id: uniqueId(),
+      });
+      e.target.value = '';
+    },
+  },
 };
 </script>
+
+<style scoped>
+.list-enter-active,
+.list-leave-active {
+  transition: all 300ms;
+}
+</style>
