@@ -9,7 +9,7 @@
       @keyup.enter="addTodo"
     />
     <transition-group v-if="todos" ref="list" name="list" tag="ul" class="mt-8">
-      <TodoItem v-for="todo in todos" :key="todo.id" :todo="todo" />
+      <TodoItem v-for="todo in todos" :key="todo.id" :todo="todo" @check="todo.done = $event" />
     </transition-group>
   </div>
 </template>

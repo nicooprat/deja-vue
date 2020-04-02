@@ -1,10 +1,12 @@
 <template>
   <li class="flex items-center relative mt-4">
-    <label
-      class="absolute left-0 transform -translate-x-full p-4 cursor-pointer"
-      :class="{ 'text-gray-700': !todo.done, 'text-gray-300': todo.done }"
-    >
-      <input type="checkbox" :checked="todo.done" class="absolute opacity-0" />
+    <label class="absolute left-0 transform -translate-x-full p-4 cursor-pointer text-gray-300 hover:text-gray-500">
+      <input
+        type="checkbox"
+        :checked="todo.done"
+        class="absolute opacity-0 pointer-events-none"
+        @change="$emit('check', !todo.done)"
+      />
       <svg width="24" height="24" viewBox="0 0 24 24">
         <path
           v-if="todo.done"
