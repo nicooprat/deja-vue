@@ -40,10 +40,11 @@ export default {
     TodoItem,
   },
   data: () => ({
-    todos: [
-      { text: 'Milk', done: false, id: uniqueId() },
-      { text: 'Eggs', done: true, id: uniqueId() },
-    ],
+    todos: ['Milk', 'Eggs', 'Bread', 'Chocolat', 'Cake'].map((text, i) => ({
+      text,
+      done: i > 2,
+      id: uniqueId(),
+    })),
   }),
   computed: {
     getSortedTodos() {
@@ -53,6 +54,9 @@ export default {
   },
   methods: {
     addTodo(e) {
+      if (!e.target.value.trim()) {
+        return;
+      }
       this.todos.unshift({
         text: e.target.value,
         done: false,
