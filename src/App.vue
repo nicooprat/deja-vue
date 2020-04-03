@@ -1,6 +1,6 @@
 <template>
   <div id="app" class="text-center max-w-lg mx-auto px-4">
-    <svg width="408" height="264" viewBox="0 0 408 264" class="logo mx-auto mb-10 mt-32">
+    <svg width="408" height="264" viewBox="0 0 408 264" class="logo mx-auto mb-16 mt-32">
       <g fill-rule="nonzero" fill="none">
         <g fill="#41B883" opacity=".2">
           <path class="logo-left" d="M.5 101.6L53 131.8.5 162v100.7l226.7-131L.5 1z" />
@@ -169,11 +169,7 @@ export default {
 }
 
 .list-enter-active {
-  transition-delay: calc(50ms * (var(--total) - var(--i)));
-}
-
-.list-leave-active {
-  transition-delay: calc(50ms * var(--i));
+  transition-delay: calc(50ms * (var(--t) - var(--i)));
 }
 
 .list-leave-active {

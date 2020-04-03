@@ -3,13 +3,10 @@
     class="flex items-center relative bg-white rounded-lg"
     :class="{ 'shadow-md': !todo.done, 'text-gray-500': todo.done }"
   >
-    <label class="p-4 text-gray-500 opacity-50 hover:opacity-100 focus:opacity-100 active:opacity-100 cursor-pointer">
-      <input
-        type="checkbox"
-        :checked="todo.done"
-        class="absolute opacity-0 pointer-events-none"
-        @change="$emit('check', !todo.done)"
-      />
+    <button
+      class="self-stretch px-5 flex items-center text-gray-500 opacity-50 hover:opacity-100 focus:opacity-100 active:opacity-100 cursor-pointer focus:outline-none"
+      @click="$emit('check', !todo.done)"
+    >
       <svg width="18" height="18" viewBox="0 0 24 24">
         <path
           v-if="todo.done"
@@ -22,7 +19,7 @@
           d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6.25 8.891l-1.421-1.409-6.105 6.218-3.078-2.937-1.396 1.436 4.5 4.319 7.5-7.627z"
         />
       </svg>
-    </label>
+    </button>
     <input
       type="text"
       :value="todo.text"
@@ -32,7 +29,7 @@
       @change="$emit('update', $event.target.value)"
     />
     <button
-      class="px-6 text-gray-500 opacity-50 hover:opacity-100 focus:opacity-100 active:opacity-100"
+      class="self-stretch px-6 text-gray-500 opacity-50 hover:opacity-100 focus:opacity-100 active:opacity-100 focus:outline-none"
       @click="$emit('remove')"
     >
       <svg width="12" height="12" viewBox="0 0 24 24">
