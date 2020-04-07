@@ -119,11 +119,15 @@ export default {
       this.lastUndo = null;
     },
     redo() {
-      // Deduplicate ids
-      this.todos = reapply(this.lastRedo).reduce(
-        (acc, todo) => acc.concat([{ ...todo, id: acc.some((t) => t.id === todo.id) ? uniqueId() : todo.id }]),
-        [],
-      );
+      // Deduplicate ids, insert new todos before their source
+      this.todos = reapply(this.lastRedo).reduce((acc, todo, index) => {
+        if (acc.some((t) => t.id === todo.id)) {
+          const [before, after] = partition(acc, (v, i) => i <= index);
+          return [...before, { ...todo, id: uniqueId() }, ...after];
+        }
+        return acc.concat(todo);
+      }, []);
+      this.lastRedo = null;
     },
   },
 };
