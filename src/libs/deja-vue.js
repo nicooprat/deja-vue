@@ -1,10 +1,8 @@
 import { cloneDeep } from 'lodash';
 import { patch, reverse, create } from 'jsondiffpatch';
 
-export const record = (source, callback) => {
-  const diffpatcher = create({
-    objectHash: (obj) => obj.id,
-  });
+export const record = (source, callback, opts) => {
+  const diffpatcher = create(opts);
   const oldSource = cloneDeep(source);
   return new Promise((resolve) => {
     callback(() => {

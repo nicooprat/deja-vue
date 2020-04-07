@@ -93,15 +93,21 @@ export default {
       if (!e.target.value.trim()) {
         return;
       }
-      record(this.todos, (done) => {
-        this.todos.unshift({
-          text: e.target.value,
-          done: false,
-          id: uniqueId(),
-        });
-        e.target.value = '';
-        done();
-      }).then((patch) => {
+      record(
+        this.todos,
+        (done) => {
+          this.todos.unshift({
+            text: e.target.value,
+            done: false,
+            id: uniqueId(),
+          });
+          e.target.value = '';
+          done();
+        },
+        {
+          objectHash: (obj) => obj.id,
+        },
+      ).then((patch) => {
         this.lastRedo = patch;
       });
     },
