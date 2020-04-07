@@ -138,33 +138,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.todo {
-  transition: all 300ms;
-  position: relative;
-  z-index: 1;
-}
-
-/* Staggering technique from https://codepen.io/shshaw/pen/YLmdxz?editors=0100 */
-.list-move {
-  transition-delay: calc(50ms * var(--i));
-}
-
-.list-enter,
-.list-leave-to {
-  opacity: 0;
-  transform: translateY(-50%);
-  z-index: 0;
-}
-
-.list-enter-active {
-  /* transition-delay: calc(50ms * (var(--t) - var(--i))); */
-}
-
-.list-leave-active {
-  position: absolute;
-  width: 100%;
-  transition-delay: calc(50ms * var(--i));
-}
-</style>
