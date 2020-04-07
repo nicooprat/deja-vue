@@ -93,7 +93,7 @@ export default {
       if (!e.target.value.trim()) {
         return;
       }
-      record(this.$data, 'todos', (done) => {
+      record(this.todos, (done) => {
         this.todos.unshift({
           text: e.target.value,
           done: false,
@@ -106,7 +106,7 @@ export default {
       });
     },
     removeTodo(todo) {
-      record(this.$data, 'todos', (done) => {
+      record(this.todos, (done) => {
         const index = this.todos.findIndex((t) => t.id === todo.id);
         this.todos.splice(index, 1);
         done();
