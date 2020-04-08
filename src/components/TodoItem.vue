@@ -24,7 +24,7 @@
       type="text"
       :value="todo.text"
       :readonly="todo.done"
-      class="w-full flex items-center py-4 bg-transparent focus:outline-none"
+      class="w-full flex items-center py-4 text-gray-600 bg-transparent focus:outline-none"
       :class="{ 'text-gray-500': todo.done }"
       @change="$emit('update', $event.target.value)"
     />

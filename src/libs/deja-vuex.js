@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import { cloneDeep, uniqueId, omitBy } from 'lodash';
-import { diff, patch as diffPatch, reverse } from 'jsondiffpatch';
+import { create } from 'jsondiffpatch';
 
-const createStore = ({ limit = 20 } = {}) => {
+const createStore = ({ limit, differ } = {}) => {
   return {
     namespaced: true,
     state: {
@@ -76,24 +76,24 @@ const createStore = ({ limit = 20 } = {}) => {
       },
       WRITE(state, id) {
         state.history.push(id);
-        if (state.history.length > limit) {
+        if (limit && state.history.length > limit) {
           state.history.shift();
         }
       },
       REVERT(state, patch) {
-        // Apply changes to a clone to mutate state only once
-        const newState = cloneDeep(this.state);
-        patch.forEach((change) => reverse(newState, true, change));
-        this.replaceState(newState);
+        differ.patch(this.state, differ.reverse(patch));
       },
       APPLY(state, patch) {
-        // Apply changes to a clone to mutate state only once
-        const newState = cloneDeep(this.state);
-        patch.forEach((change) => diffPatch(newState, true, change));
-        this.replaceState(newState);
+        differ.patch(this.state, patch);
       },
     },
     getters: {
+      getCursor(state) {
+        return state.cursor;
+      },
+      getHistory(state) {
+        return state.history;
+      },
       getIndexForPatchId(state) {
         return (id) => state.history.indexOf(id);
       },
@@ -118,13 +118,13 @@ const createStore = ({ limit = 20 } = {}) => {
 
 const omitSelfNamespace = (v, k) => k.startsWith('history-');
 
-const subscribe = (store, namespace, shouldInclude = () => true) => {
+const subscribe = (store, namespace, shouldInclude = () => true, differ) => {
   // Watch for state changes
   let oldState = cloneDeep(omitBy(store.state, omitSelfNamespace));
   return store.subscribe((mutation, state) => {
     if (!mutation.type.startsWith(namespace) && shouldInclude(mutation)) {
       const newState = omitBy(state, omitSelfNamespace);
-      const patch = diff(oldState, newState);
+      const patch = differ.diff(oldState, newState);
       if (patch) {
         store.dispatch(`${namespace}/write`, patch);
       }
@@ -135,6 +135,25 @@ const subscribe = (store, namespace, shouldInclude = () => true) => {
 
 export const createPlugin = (opts) => (store) => {
   const namespace = `history-${opts.namespace || Date.now()}`;
-  subscribe(store, namespace, opts.shouldInclude);
-  store.registerModule(namespace, createStore(opts));
+  const differ = create({
+    objectHash: opts.objectHash,
+  });
+  subscribe(store, namespace, opts.shouldInclude, differ);
+  store.registerModule(
+    namespace,
+    createStore({
+      limit: opts.limit,
+      differ,
+    }),
+  );
+};
+
+export default ({ store, limit, shouldInclude }) => {
+  const namespace = `history-${Date.now()}`;
+  const module = createStore(store, limit);
+  return {
+    namespace,
+    subscribe: () => subscribe(store, namespace, shouldInclude),
+    register: () => store.registerModule(namespace, module),
+  };
 };

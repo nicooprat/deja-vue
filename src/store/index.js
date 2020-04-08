@@ -11,6 +11,7 @@ export default new Vuex.Store({
     DejaVuex({
       namespace: 'todos',
       shouldInclude: ({ type }) => type.match('todos/'),
+      objectHash: (obj) => obj.id,
     }),
   ],
   modules: {
