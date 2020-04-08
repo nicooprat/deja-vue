@@ -70,7 +70,7 @@ export default {
     TodoItem,
   },
   data: () => ({
-    todos: ['Milk', 'Eggs', 'Bread', 'Chocolat', 'Cake'].map((text, i) => ({
+    todos: ['Milk', 'Eggs', 'Bread', 'Chocolate', 'Cake'].map((text, i) => ({
       text,
       done: i > 2,
       id: uniqueId(),
