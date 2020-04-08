@@ -54,7 +54,7 @@ const createStore = ({ limit, differ } = {}) => {
         // Rewind
         if (index < state.cursor) {
           [...state.history]
-            .slice(index + 1)
+            .slice(index + 1, state.cursor + 1)
             .reverse()
             .forEach((i) => dispatch('revert', i));
         }
