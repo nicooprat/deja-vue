@@ -3,11 +3,7 @@ import { uniqueId, partition } from 'lodash';
 export default {
   namespaced: true,
   state: {
-    todos: ['Milk', 'Eggs', 'Bread', 'Chocolate', 'Cake'].map((text, i) => ({
-      text,
-      done: i > 2,
-      id: uniqueId(),
-    })),
+    todos: [],
   },
   actions: {
     addTodo({ commit }, text) {

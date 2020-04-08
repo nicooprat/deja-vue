@@ -41,6 +41,9 @@ export default {
   computed: {
     ...mapGetters('todos', ['getSortedTodos']),
   },
+  mounted() {
+    ['Milk', 'Eggs', 'Bread', 'Chocolate', 'Cake'].forEach((text) => this.addTodo(text));
+  },
   methods: {
     ...mapActions('todos', ['addTodo', 'removeTodo', 'checkTodo', 'editTodo']),
   },
