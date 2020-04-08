@@ -1,12 +1,6 @@
 <template>
   <section>
-    <input
-      type="text"
-      placeholder="Don't forget the..."
-      class="w-full bg-transparent rounded-lg border-2 border-gray-300 py-4 px-6 focus:outline-none focus:border-blue-400"
-      autofocus
-      @keyup.enter="addNewTodo"
-    />
+    <AddTodo @add="addTodo" />
     <transition-group
       v-if="getSortedTodos"
       name="list"
@@ -32,10 +26,12 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 
+import AddTodo from '@/components/AddTodo';
 import TodoItem from '@/components/TodoItem';
 
 export default {
   components: {
+    AddTodo,
     TodoItem,
   },
   data: () => ({
@@ -47,13 +43,6 @@ export default {
   },
   methods: {
     ...mapActions('todos', ['addTodo', 'removeTodo', 'checkTodo', 'editTodo']),
-    addNewTodo(e) {
-      if (!e.target.value.trim()) {
-        return;
-      }
-      this.addTodo(e.target.value);
-      e.target.value = '';
-    },
   },
 };
 </script>

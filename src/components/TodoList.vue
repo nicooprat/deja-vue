@@ -1,12 +1,6 @@
 <template>
   <section>
-    <input
-      type="text"
-      placeholder="Don't forget the..."
-      class="w-full bg-transparent rounded-lg border-2 border-gray-300 py-4 px-6 focus:outline-none focus:border-blue-400"
-      autofocus
-      @keyup.enter="addTodo"
-    />
+    <AddTodo @add="addTodo" />
     <nav class="grid grid-flow-col gap-4 mt-4">
       <button
         :disabled="!lastUndo"
@@ -67,10 +61,12 @@
 import { uniqueId, partition } from 'lodash';
 
 import { record, revert, reapply } from '@/libs/deja-vue';
+import AddTodo from '@/components/AddTodo';
 import TodoItem from '@/components/TodoItem';
 
 export default {
   components: {
+    AddTodo,
     TodoItem,
   },
   data: () => ({
@@ -89,19 +85,15 @@ export default {
     },
   },
   methods: {
-    addTodo(e) {
-      if (!e.target.value.trim()) {
-        return;
-      }
+    addTodo(text) {
       record(
         this.todos,
         (done) => {
           this.todos.unshift({
-            text: e.target.value,
+            text,
             done: false,
             id: uniqueId(),
           });
-          e.target.value = '';
           done();
         },
         {
