@@ -76,9 +76,16 @@ const createStore = ({ limit, differ } = {}) => {
       },
       WRITE(state, id) {
         state.history.push(id);
+        // Remove too old history according to limit option, if any
         if (limit && state.history.length > limit) {
           state.history.shift();
         }
+        // Remove unreferenced patches
+        Object.keys(state.patches).forEach((key) => {
+          if (!state.history.some((k) => k === key)) {
+            delete state.patches[key];
+          }
+        });
       },
       REVERT(state, patch) {
         differ.patch(this.state, differ.reverse(patch));
