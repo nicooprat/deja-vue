@@ -27,14 +27,6 @@ const createStore = ({ limit, differ } = {}) => {
         commit('APPLY', getters.getPatchById(id));
         commit('SET_CURSOR', getters.getIndexForPatchId(id));
       },
-      reapply({ dispatch, getters }, id) {
-        // Clone and override `index` to add todos at the end of the list
-        const newPatch = cloneDeep(getters.getPatchById(id)).map((patch) => ({
-          ...patch,
-          ...(!Number(patch.index) && { index: this.state[patch.path[0]].length }),
-        }));
-        dispatch('write', newPatch).then((newId) => dispatch('apply', newId));
-      },
       undo({ dispatch, getters }) {
         if (getters.canUndo) {
           dispatch('revert', getters.getCurrentPatchId);

@@ -21,7 +21,6 @@
           class="border-l-2 border-r-2 border-gray-300"
           :class="index === getCursor && 'is-active'"
           @click.exact="travel(patchId)"
-          @click.alt="reapply(patchId)"
         >
           {{ patchId }}
         </button>
