@@ -17,10 +17,18 @@
       >
         Vuex
       </button>
+      <button
+        class="flex items-center justify-center py-4 text-sm font-bold text-gray-600 hover:text-blue-500 focus:text-blue-500 focus:outline-none"
+        :class="{ 'text-blue-500': tab === 'renderless' }"
+        @click="tab = 'renderless'"
+      >
+        Renderless
+      </button>
     </nav>
 
     <TodoList v-if="tab === 'data'" />
     <TodoListVuex v-if="tab === 'vuex'" />
+    <TodoListVuexRenderless v-if="tab === 'renderless'" />
   </div>
 </template>
 
@@ -28,15 +36,17 @@
 import Logo from '@/components/Logo';
 import TodoList from '@/components/TodoList';
 import TodoListVuex from '@/components/TodoListVuex';
+import TodoListVuexRenderless from '@/components/TodoListVuexRenderless';
 
 export default {
   components: {
     Logo,
     TodoList,
     TodoListVuex,
+    TodoListVuexRenderless,
   },
   data: () => ({
-    tab: 'vuex',
+    tab: 'renderless',
   }),
 };
 </script>

@@ -147,12 +147,13 @@ export const createPlugin = (opts) => (store) => {
   );
 };
 
-export default ({ store, limit, shouldInclude }) => {
+export const createAll = ({ store, limit, shouldInclude, objectHash }) => {
   const namespace = `history-${Date.now()}`;
-  const module = createStore(store, limit);
+  const differ = create({ objectHash });
+  const module = createStore({ limit, differ });
   return {
     namespace,
-    subscribe: () => subscribe(store, namespace, shouldInclude),
+    subscribe: () => subscribe(store, namespace, shouldInclude, differ),
     register: () => store.registerModule(namespace, module),
   };
 };
