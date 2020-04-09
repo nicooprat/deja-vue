@@ -3,50 +3,39 @@
     <Logo />
 
     <nav class="grid grid-flow-col gap-4 mb-4">
-      <button
-        class="flex items-center justify-center py-4 text-sm font-bold text-gray-600 hover:text-blue-500 focus:text-blue-500 focus:outline-none"
-        :class="{ 'text-blue-500': tab === 'data' }"
-        @click="tab = 'data'"
-      >
+      <router-link to="/">
         Data
-      </button>
-      <button
-        class="flex items-center justify-center py-4 text-sm font-bold text-gray-600 hover:text-blue-500 focus:text-blue-500 focus:outline-none"
-        :class="{ 'text-blue-500': tab === 'vuex' }"
-        @click="tab = 'vuex'"
-      >
+      </router-link>
+      <router-link to="/vuex">
         Vuex
-      </button>
-      <button
-        class="flex items-center justify-center py-4 text-sm font-bold text-gray-600 hover:text-blue-500 focus:text-blue-500 focus:outline-none"
-        :class="{ 'text-blue-500': tab === 'renderless' }"
-        @click="tab = 'renderless'"
-      >
+      </router-link>
+      <router-link to="/renderless">
         Renderless
-      </button>
+      </router-link>
     </nav>
 
-    <TodoList v-if="tab === 'data'" />
-    <TodoListVuex v-if="tab === 'vuex'" />
-    <TodoListVuexRenderless v-if="tab === 'renderless'" />
+    <router-view />
   </div>
 </template>
 
 <script>
 import Logo from '@/components/Logo';
-import TodoList from '@/components/TodoList';
-import TodoListVuex from '@/components/TodoListVuex';
-import TodoListVuexRenderless from '@/components/TodoListVuexRenderless';
 
 export default {
   components: {
     Logo,
-    TodoList,
-    TodoListVuex,
-    TodoListVuexRenderless,
   },
-  data: () => ({
-    tab: 'renderless',
-  }),
 };
 </script>
+
+<style scoped>
+a {
+  @apply flex items-center justify-center py-4 text-sm font-bold text-gray-600;
+}
+
+a:hover,
+a:focus,
+a.router-link-exact-active {
+  @apply text-blue-500 outline-none;
+}
+</style>
