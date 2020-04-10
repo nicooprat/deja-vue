@@ -11,14 +11,17 @@
         }"
         @click="undo"
       >
-        <svg class="mr-4" width="14" height="14" viewBox="0 0 24 24">
-          <path
-            fill="currentColor"
-            transform="translate(24 0) scale(-1 1) "
-            d="M14 12l-14 9v-18l14 9zm-4-9v4l8.022 5-8.022 5v4l14-9-14-9z"
-          />
-        </svg>
-        Get back removed todo
+        <template v-if="lastUndo">
+          <svg class="mr-4" width="14" height="14" viewBox="0 0 24 24">
+            <path
+              fill="currentColor"
+              transform="translate(24 0) scale(-1 1) "
+              d="M14 12l-14 9v-18l14 9zm-4-9v4l8.022 5-8.022 5v4l14-9-14-9z"
+            />
+          </svg>
+          Get back "{{ lastUndo.name }}"
+        </template>
+        <template v-else>Nothing to undo</template>
       </button>
       <button
         :disabled="!lastRedo"
@@ -29,10 +32,13 @@
         }"
         @click="redo"
       >
-        Insert last todo again
-        <svg class="ml-4" width="14" height="14" viewBox="0 0 24 24">
-          <path fill="currentColor" d="M14 12l-14 9v-18l14 9zm-4-9v4l8.022 5-8.022 5v4l14-9-14-9z" />
-        </svg>
+        <template v-if="lastRedo">
+          Insert "{{ lastRedo.name }}" again
+          <svg class="ml-4" width="14" height="14" viewBox="0 0 24 24">
+            <path fill="currentColor" d="M14 12l-14 9v-18l14 9zm-4-9v4l8.022 5-8.022 5v4l14-9-14-9z" />
+          </svg>
+        </template>
+        <template v-else>Nothing to redo</template>
       </button>
     </nav>
     <transition-group
@@ -97,6 +103,7 @@ export default {
         },
         {
           objectHash: (obj) => obj.id,
+          name: text,
         },
       );
     },
@@ -109,6 +116,7 @@ export default {
         },
         {
           objectHash: (obj) => obj.id,
+          name: todo.text,
         },
       );
     },
@@ -130,3 +138,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+nav {
+  grid-template-columns: 50% 50%;
+}
+</style>
