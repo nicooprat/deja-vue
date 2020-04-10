@@ -85,8 +85,8 @@ export default {
     },
   },
   methods: {
-    addTodo(text) {
-      record(
+    async addTodo(text) {
+      this.lastRedo = await record(
         this.todos,
         () => {
           this.todos.unshift({
@@ -98,16 +98,12 @@ export default {
         {
           objectHash: (obj) => obj.id,
         },
-      ).then((patch) => {
-        this.lastRedo = patch;
-      });
+      );
     },
-    removeTodo(todo) {
-      record(this.todos, () => {
+    async removeTodo(todo) {
+      this.lastUndo = await record(this.todos, () => {
         const index = this.todos.findIndex((t) => t.id === todo.id);
         this.todos.splice(index, 1);
-      }).then((patch) => {
-        this.lastUndo = patch;
       });
     },
     undo() {
