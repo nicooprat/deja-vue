@@ -101,10 +101,16 @@ export default {
       );
     },
     async removeTodo(todo) {
-      this.lastUndo = await record(this.todos, () => {
-        const index = this.todos.findIndex((t) => t.id === todo.id);
-        this.todos.splice(index, 1);
-      });
+      this.lastUndo = await record(
+        this.todos,
+        () => {
+          const index = this.todos.findIndex((t) => t.id === todo.id);
+          this.todos.splice(index, 1);
+        },
+        {
+          objectHash: (obj) => obj.id,
+        },
+      );
     },
     undo() {
       this.todos = revert(this.lastUndo);
