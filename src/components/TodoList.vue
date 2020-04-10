@@ -85,32 +85,32 @@ export default {
     },
   },
   methods: {
-    addTodo(text) {
-      record(
+    async addTodo(text) {
+      this.lastRedo = await record(
         this.todos,
-        (done) => {
+        () => {
           this.todos.unshift({
             text,
             done: false,
             id: uniqueId(),
           });
-          done();
         },
         {
           objectHash: (obj) => obj.id,
         },
-      ).then((patch) => {
-        this.lastRedo = patch;
-      });
+      );
     },
-    removeTodo(todo) {
-      record(this.todos, (done) => {
-        const index = this.todos.findIndex((t) => t.id === todo.id);
-        this.todos.splice(index, 1);
-        done();
-      }).then((patch) => {
-        this.lastUndo = patch;
-      });
+    async removeTodo(todo) {
+      this.lastUndo = await record(
+        this.todos,
+        () => {
+          const index = this.todos.findIndex((t) => t.id === todo.id);
+          this.todos.splice(index, 1);
+        },
+        {
+          objectHash: (obj) => obj.id,
+        },
+      );
     },
     undo() {
       this.todos = revert(this.lastUndo);
