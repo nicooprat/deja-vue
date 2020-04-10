@@ -6,11 +6,14 @@
       <router-link to="/">
         Data
       </router-link>
+      <router-link to="/renderless">
+        Renderless
+      </router-link>
       <router-link to="/vuex">
         Vuex
       </router-link>
-      <router-link to="/renderless">
-        Renderless
+      <router-link to="/vuex-renderless">
+        Vuex Renderless
       </router-link>
     </nav>
 
