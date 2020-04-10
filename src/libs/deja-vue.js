@@ -4,15 +4,23 @@ import { patch, reverse, create } from 'jsondiffpatch';
 export const record = (source, callback, opts) => {
   const diffpatcher = create(opts);
   const oldSource = cloneDeep(source);
-  return new Promise((resolve) => {
-    callback(() => {
-      const newSource = cloneDeep(source);
-      const changes = diffpatcher.diff(oldSource, newSource);
-      resolve({
-        changes,
-        source,
+
+  const promise = callback.then
+    ? // If the callback function is async, just wait for its resolution
+      callback
+    : new Promise((resolve) => {
+        // Otherwise wait for the sync execution.
+        callback();
+        resolve();
       });
-    });
+
+  return promise.then(() => {
+    const newSource = cloneDeep(source);
+    const changes = diffpatcher.diff(oldSource, newSource);
+    return {
+      changes,
+      source,
+    };
   });
 };
 

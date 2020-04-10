@@ -88,13 +88,12 @@ export default {
     addTodo(text) {
       record(
         this.todos,
-        (done) => {
+        () => {
           this.todos.unshift({
             text,
             done: false,
             id: uniqueId(),
           });
-          done();
         },
         {
           objectHash: (obj) => obj.id,
@@ -104,10 +103,9 @@ export default {
       });
     },
     removeTodo(todo) {
-      record(this.todos, (done) => {
+      record(this.todos, () => {
         const index = this.todos.findIndex((t) => t.id === todo.id);
         this.todos.splice(index, 1);
-        done();
       }).then((patch) => {
         this.lastUndo = patch;
       });
