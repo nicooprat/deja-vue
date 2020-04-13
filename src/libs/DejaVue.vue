@@ -1,6 +1,6 @@
 <script>
 import { uniqueId, pick, cloneDeep } from 'lodash';
-import { create } from 'jsondiffpatch';
+import { patch as diffPatch, reverse as diffReverse, create as diffCreate } from 'jsondiffpatch';
 
 export default {
   props: {
@@ -30,7 +30,7 @@ export default {
     record: {
       handler(newRecord) {
         const id = uniqueId();
-        const patch = this.differ.diff(newRecord, this.oldRecord);
+        const patch = this.diffpatcher.diff(newRecord, this.oldRecord);
         // Ignore if no differences, probably because the prop has been synced with parent
         if (!patch) {
           this.oldRecord = cloneDeep(newRecord);
@@ -51,7 +51,7 @@ export default {
     },
   },
   created() {
-    this.differ = create({
+    this.diffpatcher = diffCreate({
       objectHash: this.objectHash,
     });
     this.oldRecord = cloneDeep(this.record);
@@ -63,7 +63,7 @@ export default {
       }
       const patch = this.patches[this.history[this.cursor]];
       const patchedRecord = cloneDeep(this.record);
-      this.differ.patch(patchedRecord, patch);
+      diffPatch(patchedRecord, patch);
       this.$emit('update:record', patchedRecord);
       this.oldRecord = patchedRecord;
       this.cursor -= 1;
@@ -74,7 +74,7 @@ export default {
       }
       const patch = this.patches[this.history[this.cursor + 1]];
       const patchedRecord = cloneDeep(this.record);
-      this.differ.patch(patchedRecord, this.differ.reverse(patch));
+      diffPatch(patchedRecord, diffReverse(patch));
       this.$emit('update:record', patchedRecord);
       this.oldRecord = patchedRecord;
       this.cursor += 1;

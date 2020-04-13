@@ -68,6 +68,10 @@ export default {
     lastUndo: null,
     lastRedo: null,
   }),
+  computed: {
+    ...mapGetters('todos', ['getSortedTodos']),
+    ...mapGetters('history-todos', ['getHistory', 'getCursor', 'canUndo', 'canRedo']),
+  },
   watch: {
     getCursor() {
       this.$nextTick(() => {
@@ -76,10 +80,6 @@ export default {
         parent.scrollLeft = active.offsetLeft - parent.offsetLeft - parent.offsetWidth / 2 + active.offsetWidth / 2;
       });
     },
-  },
-  computed: {
-    ...mapGetters('todos', ['getSortedTodos']),
-    ...mapGetters('history-todos', ['getHistory', 'getCursor', 'canUndo', 'canRedo']),
   },
   mounted() {
     ['Milk', 'Eggs', 'Bread', 'Chocolate', 'Cake'].forEach((text) => this.addTodo(text));
