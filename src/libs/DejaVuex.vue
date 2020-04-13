@@ -18,7 +18,7 @@ export default {
   },
   created() {
     // Register module on created so mounted can watch getter
-    const { namespace, register, subscribe } = createAll({
+    const { namespace, register } = createAll({
       store: this.$store,
       limit: this.$options.propsData.limit,
       include: this.$options.propsData.include,
@@ -26,7 +26,7 @@ export default {
     });
     register();
     this.namespace = namespace;
-    this.unsubscribe = subscribe();
+    this.$store.dispatch(`${this.namespace}/record`);
   },
   mounted() {
     // Emit cursor change event
@@ -36,8 +36,8 @@ export default {
     );
   },
   destroyed() {
+    this.$store.dispatch(`${this.namespace}/stop`);
     this.$store.unregisterModule(this.namespace);
-    this.unsubscribe();
   },
   render(h) {
     return h(

@@ -84,7 +84,7 @@ export default {
     this.cleanupTodos();
   },
   mounted() {
-    // ['Milk', 'Eggs', 'Bread', 'Chocolate', 'Cake'].forEach((text) => this.addTodo(text));
+    ['Milk', 'Eggs', 'Bread', 'Chocolate', 'Cake'].forEach((text) => this.addTodo(text));
   },
   methods: {
     ...mapActions('todos', ['cleanupTodos', 'addTodo', 'removeTodo', 'checkTodo', 'editTodo']),

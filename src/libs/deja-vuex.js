@@ -8,11 +8,20 @@ const defaultState = {
   cursor: -1,
 };
 
-const createStore = ({ limit } = {}) => {
+const createStore = ({ limit, sub } = {}) => {
+  let unsub;
   return {
     namespaced: true,
     state: { ...defaultState },
     actions: {
+      record() {
+        unsub = sub();
+      },
+      stop() {
+        if (unsub) {
+          unsub();
+        }
+      },
       cleanup({ commit }) {
         commit('CLEANUP');
       },
@@ -145,17 +154,17 @@ const subscribe = ({ store, namespace, shouldInclude = () => true, differ }) => 
 export const createPlugin = ({ objectHash, namespace, shouldInclude, limit }) => (store) => {
   const newNamespace = `history-${namespace || Date.now()}`;
   const differ = diffCreate({ objectHash });
-  subscribe({ store, namespace: newNamespace, shouldInclude, differ });
-  store.registerModule(newNamespace, createStore({ limit }));
+  const sub = () => subscribe({ store, namespace: newNamespace, shouldInclude, differ });
+  store.registerModule(newNamespace, createStore({ limit, sub }));
 };
 
 export const createAll = ({ store, limit, shouldInclude, objectHash }) => {
   const namespace = `history-${Date.now()}`;
   const differ = diffCreate({ objectHash });
-  const module = createStore({ limit, differ });
+  const sub = () => subscribe({ store, namespace, shouldInclude, differ });
+  const module = createStore({ limit, differ, sub });
   return {
     namespace,
-    subscribe: () => subscribe({ store, namespace, shouldInclude, differ }),
     register: () => store.registerModule(namespace, module),
   };
 };

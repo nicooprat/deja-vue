@@ -81,14 +81,20 @@ export default {
       });
     },
   },
-  mounted() {
+  created() {
     this.cleanupTodos();
     this.cleanup();
+    this.record();
+  },
+  mounted() {
     ['Milk', 'Eggs', 'Bread', 'Chocolate', 'Cake'].forEach((text) => this.addTodo(text));
+  },
+  destroyed() {
+    this.stop();
   },
   methods: {
     ...mapActions('todos', ['cleanupTodos', 'addTodo', 'removeTodo', 'checkTodo', 'editTodo']),
-    ...mapActions('history-todos', ['cleanup', 'undo', 'redo', 'travel']),
+    ...mapActions('history-todos', ['record', 'stop', 'cleanup', 'undo', 'redo', 'travel']),
   },
 };
 </script>
