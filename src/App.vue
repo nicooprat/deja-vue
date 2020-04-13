@@ -24,13 +24,13 @@ export default {
 </script>
 
 <style scoped>
-a {
-  @apply flex items-center justify-center py-4 text-sm font-bold text-gray-600;
+nav a {
+  @apply flex items-center justify-center py-2 text-sm font-bold text-gray-600;
 }
 
-a:hover,
-a:focus,
-a.router-link-exact-active {
-  @apply text-blue-500 outline-none;
+nav a:hover,
+nav a:focus,
+nav a.router-link-exact-active {
+  @apply text-greenvue outline-none no-underline;
 }
 </style>

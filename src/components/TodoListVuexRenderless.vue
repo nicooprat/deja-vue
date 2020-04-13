@@ -130,6 +130,6 @@ nav button:disabled {
 }
 
 nav button.is-active {
-  @apply text-blue-500 bg-gray-200;
+  @apply text-greenvue bg-gray-200;
 }
 </style>

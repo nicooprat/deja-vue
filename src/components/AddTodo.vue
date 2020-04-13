@@ -2,7 +2,7 @@
   <input
     type="text"
     placeholder="Don't forget the..."
-    class="w-full bg-transparent rounded-lg border-2 border-gray-300 py-4 px-6 focus:outline-none focus:border-blue-400"
+    class="w-full bg-transparent rounded-lg border-2 border-gray-300 py-4 px-6 focus:outline-none focus:border-greenvue"
     autofocus
     @keyup.enter="addTodo"
   />

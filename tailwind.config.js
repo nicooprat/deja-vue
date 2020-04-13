@@ -1,6 +1,10 @@
 module.exports = {
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        greenvue: '#42b883',
+      },
+    },
   },
   variants: {},
   plugins: [],
