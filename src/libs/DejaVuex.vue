@@ -16,13 +16,8 @@ export default {
       default: null,
     },
   },
-  mounted() {
-    this.$watch(
-      () => this.$store.getters[`${this.namespace}/getCursor`],
-      (cursor) => this.$emit('cursorChanged', cursor),
-    );
-  },
   created() {
+    // Register module on created so mounted can watch getter
     const { namespace, register, subscribe } = createAll({
       store: this.$store,
       limit: this.$options.propsData.limit,
@@ -32,6 +27,13 @@ export default {
     register();
     this.namespace = namespace;
     this.unsubscribe = subscribe();
+  },
+  mounted() {
+    // Emit cursor change event
+    this.$watch(
+      () => this.$store.getters[`${this.namespace}/getCursor`],
+      (cursor) => this.$emit('cursorChanged', cursor),
+    );
   },
   destroyed() {
     this.$store.unregisterModule(this.namespace);

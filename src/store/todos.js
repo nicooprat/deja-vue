@@ -6,6 +6,9 @@ export default {
     todos: [],
   },
   actions: {
+    cleanupTodos({ commit }) {
+      commit('CLEANUP_TODOS');
+    },
     addTodo({ commit }, text) {
       commit('ADD_TODO', {
         text,
@@ -27,6 +30,9 @@ export default {
     },
   },
   mutations: {
+    CLEANUP_TODOS(state) {
+      state.todos.splice(0);
+    },
     ADD_TODO(state, todo) {
       state.todos.unshift(todo);
     },

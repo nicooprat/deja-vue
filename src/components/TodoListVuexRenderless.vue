@@ -80,11 +80,14 @@ export default {
   computed: {
     ...mapGetters('todos', ['getSortedTodos']),
   },
+  created() {
+    this.cleanupTodos();
+  },
   mounted() {
-    ['Milk', 'Eggs', 'Bread', 'Chocolate', 'Cake'].forEach((text) => this.addTodo(text));
+    // ['Milk', 'Eggs', 'Bread', 'Chocolate', 'Cake'].forEach((text) => this.addTodo(text));
   },
   methods: {
-    ...mapActions('todos', ['addTodo', 'removeTodo', 'checkTodo', 'editTodo']),
+    ...mapActions('todos', ['cleanupTodos', 'addTodo', 'removeTodo', 'checkTodo', 'editTodo']),
     scrollCursor() {
       this.$nextTick(() => {
         const parent = this.$refs.cursor;

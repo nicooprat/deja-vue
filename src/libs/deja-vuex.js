@@ -2,15 +2,20 @@ import Vue from 'vue';
 import { cloneDeep, uniqueId, omitBy } from 'lodash';
 import { patch as diffPatch, reverse as diffReverse, create as diffCreate } from 'jsondiffpatch';
 
+const defaultState = {
+  patches: {},
+  history: [],
+  cursor: -1,
+};
+
 const createStore = ({ limit } = {}) => {
   return {
     namespaced: true,
-    state: {
-      patches: {},
-      history: [],
-      cursor: -1,
-    },
+    state: { ...defaultState },
     actions: {
+      cleanup({ commit }) {
+        commit('CLEANUP');
+      },
       write({ state, commit }, patch) {
         const id = uniqueId();
         commit('ERASE_FUTURE');
@@ -45,18 +50,23 @@ const createStore = ({ limit } = {}) => {
         const index = getters.getIndexForPatchId(id);
         // Rewind
         if (index < state.cursor) {
-          [...state.history]
+          state.history
             .slice(index + 1, state.cursor + 1)
             .reverse()
             .forEach((i) => dispatch('revert', i));
         }
         // Fast forward
         if (index > state.cursor) {
-          [...state.history].slice(state.cursor + 1, index + 1).forEach((i) => dispatch('apply', i));
+          state.history.slice(state.cursor + 1, index + 1).forEach((i) => dispatch('apply', i));
         }
       },
     },
     mutations: {
+      CLEANUP(state) {
+        Object.keys(defaultState).forEach((key) => {
+          state[key] = defaultState[key];
+        });
+      },
       SET_CURSOR(state, index) {
         state.cursor = index;
       },
@@ -121,14 +131,14 @@ const subscribe = ({ store, namespace, shouldInclude = () => true, differ }) => 
   // Watch for state changes
   let oldState = cloneDeep(omitBy(store.state, omitSelfNamespace));
   return store.subscribe((mutation, state) => {
-    const newState = omitBy(cloneDeep(state), omitSelfNamespace);
     if (!mutation.type.startsWith(namespace) && shouldInclude(mutation)) {
+      const newState = omitBy(cloneDeep(state), omitSelfNamespace);
       const patch = differ.diff(oldState, newState);
       if (patch) {
         store.dispatch(`${namespace}/write`, patch);
       }
     }
-    oldState = cloneDeep(newState);
+    oldState = omitBy(cloneDeep(state), omitSelfNamespace);
   });
 };
 
