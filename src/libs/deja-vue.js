@@ -1,36 +1,22 @@
 import { cloneDeep } from 'lodash';
-import { patch, reverse, create } from 'jsondiffpatch';
+import { patch as diffPatch, reverse, create } from 'jsondiffpatch';
 
-export const record = (source, callback, { objectHash, name }) => {
-  const diffpatcher = create({
-    objectHash,
-  });
+export const record = (source, callback, { objectHash }) => {
+  const diffpatcher = create({ objectHash });
+  // Clone source to remember it when diffing
   const oldSource = cloneDeep(source);
-
+  // If the callback function is async, just wait for its resolution
+  // Otherwise wait for the sync execution.
   const promise = callback.then
-    ? // If the callback function is async, just wait for its resolution
-      callback
+    ? callback
     : new Promise((resolve) => {
-        // Otherwise wait for the sync execution.
         callback();
         resolve();
       });
-
-  return promise.then(() => {
-    const newSource = cloneDeep(source);
-    const changes = diffpatcher.diff(oldSource, newSource);
-    return {
-      changes,
-      source,
-      name,
-    };
-  });
+  // Returns a patch than can be reverted or reapplied later
+  return promise.then(() => diffpatcher.diff(oldSource, cloneDeep(source)));
 };
 
-export const revert = ({ source, changes }) => {
-  return patch(cloneDeep(source), reverse(changes));
-};
+export const revert = (source, patch) => diffPatch(cloneDeep(source), reverse(patch));
 
-export const reapply = ({ source, changes }) => {
-  return patch(cloneDeep(source), changes);
-};
+export const reapply = (source, patch) => diffPatch(cloneDeep(source), patch);

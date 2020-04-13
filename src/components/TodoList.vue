@@ -11,7 +11,7 @@
         }"
         @click="undo"
       >
-        <template v-if="lastUndo">
+        <template v-if="lastUndoName">
           <svg class="mr-4" width="14" height="14" viewBox="0 0 24 24">
             <path
               fill="currentColor"
@@ -19,7 +19,7 @@
               d="M14 12l-14 9v-18l14 9zm-4-9v4l8.022 5-8.022 5v4l14-9-14-9z"
             />
           </svg>
-          Get back "{{ lastUndo.name }}"
+          Get back "{{ lastUndoName }}"
         </template>
         <template v-else>Nothing to undo</template>
       </button>
@@ -32,8 +32,8 @@
         }"
         @click="redo"
       >
-        <template v-if="lastRedo">
-          Insert "{{ lastRedo.name }}" again
+        <template v-if="lastRedoName">
+          Insert "{{ lastRedoName }}" again
           <svg class="ml-4" width="14" height="14" viewBox="0 0 24 24">
             <path fill="currentColor" d="M14 12l-14 9v-18l14 9zm-4-9v4l8.022 5-8.022 5v4l14-9-14-9z" />
           </svg>
@@ -82,7 +82,9 @@ export default {
       id: uniqueId(),
     })),
     lastUndo: null,
+    lastUndoName: null,
     lastRedo: null,
+    lastRedoName: null,
   }),
   computed: {
     getSortedTodos() {
@@ -103,9 +105,9 @@ export default {
         },
         {
           objectHash: (obj) => obj.id,
-          name: text,
         },
       );
+      this.lastRedoName = text;
     },
     async removeTodo(todo) {
       this.lastUndo = await record(
@@ -119,14 +121,16 @@ export default {
           name: todo.text,
         },
       );
+      this.lastUndoName = todo.text;
     },
     undo() {
-      this.todos = revert(this.lastUndo);
+      this.todos = revert(this.todos, this.lastUndo);
       this.lastUndo = null;
+      this.lastUndoName = null;
     },
     redo() {
       // Deduplicate ids, insert new todos before their source
-      this.todos = reapply(this.lastRedo).reduce((acc, todo, index) => {
+      this.todos = reapply(this.todos, this.lastRedo).reduce((acc, todo, index) => {
         if (acc.some((t) => t.id === todo.id)) {
           const [before, after] = partition(acc, (v, i) => i <= index);
           return [...before, { ...todo, id: uniqueId() }, ...after];
@@ -134,6 +138,7 @@ export default {
         return acc.concat(todo);
       }, []);
       this.lastRedo = null;
+      this.lastRedoName = null;
     },
   },
 };
@@ -141,6 +146,6 @@ export default {
 
 <style scoped>
 nav {
-  grid-template-columns: 50% 50%;
+  grid-template-columns: repeat(2, 1fr);
 }
 </style>
