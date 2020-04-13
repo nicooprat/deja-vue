@@ -3,18 +3,10 @@
     <Logo />
 
     <nav class="grid grid-flow-col gap-4 mb-4">
-      <router-link to="/">
-        Data
-      </router-link>
-      <router-link to="/renderless">
-        Renderless
-      </router-link>
-      <router-link to="/vuex">
-        Vuex
-      </router-link>
-      <router-link to="/vuex-renderless">
-        Vuex Renderless
-      </router-link>
+      <router-link to="/">Data</router-link>
+      <router-link to="/renderless">Data Renderless</router-link>
+      <router-link to="/vuex">Vuex</router-link>
+      <router-link to="/vuex-renderless">Vuex Renderless</router-link>
     </nav>
 
     <router-view />
