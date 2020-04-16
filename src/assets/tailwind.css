@@ -15,6 +15,7 @@ html {
   z-index: 1;
 }
 
+/* purgecss start ignore */
 /* Staggering technique from https://codepen.io/shshaw/pen/YLmdxz?editors=0100 */
 .list-move {
   transition-delay: calc(50ms * var(--i));
@@ -36,3 +37,4 @@ html {
   width: 100%;
   transition-delay: calc(50ms * var(--i));
 }
+/* purgecss end ignore */
