@@ -62,7 +62,7 @@ Beware in this case that you may have to manually manage new datas, as todo ids 
 
 Simply import the `DejaVue` component and wrap your code in its slot.
 
-```html
+```vue
 <DejaVue v-slot="{ getHistory, getCursor, undo, redo, canUndo, canRedo }" :record.sync="todos" @cursorChanged="anything">
   <!-- Use computed and methods as you wish -->
 </DejaVue>
@@ -113,7 +113,7 @@ export default new Vuex.Store({
 
 This component uses DejaVuex internally, but eases its use by automatically creating, registering in the store when created, and unregistering it when destroyed.
 
-```js
+```vue
 <DejaVuex
   v-slot="{ getHistory, getCursor, undo, redo, canUndo, canRedo, travel }"
   :objectHash="(obj) => obj.id"
