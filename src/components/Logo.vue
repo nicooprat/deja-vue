@@ -17,7 +17,7 @@
       class="text-gray-500 underline text-sm hover:text-greenvue focus:text-greenvue focus:outline-none"
       href="https://github.com/nicooprat/deja-vue"
     >
-      License, credits & fork on Github
+      Explore code & fork on Github
     </a>
   </header>
 </template>
