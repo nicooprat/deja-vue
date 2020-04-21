@@ -49,6 +49,9 @@ export default {
       },
       deep: true,
     },
+    cursor(cursor) {
+      this.$emit('cursorChanged', cursor);
+    },
   },
   created() {
     this.diffpatcher = diffCreate({
