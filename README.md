@@ -1,4 +1,4 @@
-<img src="./src/assets/logo.png />
+<img src="./src/assets/logo.svg" />
 
 # deja-vue
 
